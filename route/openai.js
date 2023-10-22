@@ -4,7 +4,9 @@ const openaiRouter = express.Router();
 require("dotenv").config();
 
 const API_KEY = process.env.OPENAI_API_KEY;
-
+openaiRouter.get("/check",(req,res)=>{
+  res.json({ error: "type is missing" });
+})
 openaiRouter.post("/get", async (req, res) => {
   try {
     const { keyword } = req.body;
