@@ -4,11 +4,11 @@ Node.js/Express backend for the Creative AI Studio content generation applicatio
 
 ## ✨ Powered by Google Gemini (FREE!)
 
-This backend uses **Google's Gemini AI** (gemini-1.5-flash model) which is **completely free** with generous rate limits.
+This backend uses **Google's Gemini AI** (gemini-2.5-flash model) which is **completely free** with generous rate limits.
 
 ## Features
 
-- 🤖 Google Gemini 1.5 Flash integration (FREE tier)
+- 🤖 Google Gemini 2.5 Flash integration (FREE tier)
 - 🎨 14+ content types supported
 - 🎯 Tone customization (funny, serious, romantic, motivational)
 - 📏 Length control (short, medium, long)
@@ -81,7 +81,7 @@ Generate AI content based on parameters.
     "keyword": "cats",
     "tone": "funny",
     "length": "medium",
-    "model": "gemini-1.5-flash",
+    "model": "gemini-2.5-flash",
     "timestamp": "2025-12-13T08:00:00.000Z"
   }
 }
@@ -104,7 +104,7 @@ Check server status and AI provider info.
   "timestamp": "2025-12-13T08:00:00.000Z",
   "version": "1.0.0",
   "ai_provider": "Google Gemini",
-  "model": "gemini-1.5-flash"
+  "model": "gemini-2.5-flash"
 }
 ```
 
@@ -176,7 +176,7 @@ This is perfect for personal projects and development!
 - Node.js
 - Express.js
 - Google Generative AI SDK (@google/generative-ai)
-- Gemini 1.5 Flash model (FREE)
+- Gemini 2.5 Flash model (FREE)
 - dotenv
 - Helmet
 - CORS
