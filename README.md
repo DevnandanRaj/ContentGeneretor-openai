@@ -1,48 +1,53 @@
-# Creative AI Studio - Backend API
+# ContentGenerator - Backend API
 
-Node.js/Express backend for the Creative AI Studio content generation application.
+🚀 Node.js/Express backend for the Creative AI Studio content generation application.
 
-## ✨ Powered by Google Gemini (FREE!)
+## ✨ Powered by Google Gemini 2.5 Flash
 
-This backend uses **Google's Gemini AI** (gemini-1.5-flash model) which is **completely free** with generous rate limits.
+This backend uses **Google's Gemini 2.5 Flash** - a cutting-edge AI model optimized for speed, cost-efficiency, and high-volume processing.
 
-## Features
+## 🎯 Features
 
-- 🤖 Google Gemini 1.5 Flash integration (FREE tier)
-- 🎨 14+ content types supported
-- 🎯 Tone customization (funny, serious, romantic, motivational)
-- 📏 Length control (short, medium, long)
-- 🛡️ Rate limiting and security (Helmet, CORS)
-- ⚡ Fast and efficient API responses
-- 🔒 Environment-based configuration
-- 💰 **Completely FREE** - No API costs!
+- 🤖 **Google Gemini 2.5 Flash** - Latest model (GA June 2025)
+- 🎨 **14 Content Types** - From shayari to motivational speeches
+- 🎭 **Tone Customization** - Funny, serious, romantic, motivational
+- 📏 **Length Control** - Short (100), medium (200), long (400 words)
+- 🛡️ **Security First** - Helmet, CORS, rate limiting
+- ⚡ **Fast & Efficient** - Optimized for low latency
+- 🏗️ **Modular Architecture** - Clean MVC structure
+- 🔒 **Production Ready** - Environment-based configuration
 
-## Installation
+## 📦 Installation
 
-1. **Install dependencies**:
+### Local Development
+
+1. **Clone the repository**:
+```bash
+git clone <your-repo-url>
+cd backend
+```
+
+2. **Install dependencies**:
 ```bash
 npm install
 ```
 
-2. **Get your FREE Gemini API key**:
-   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+3. **Get your FREE Gemini API key**:
+   - Visit [Google AI Studio](https://aistudio.google.com/apikey)
    - Sign in with your Google account
    - Click "Create API Key"
-   - Copy your API key
+   - Copy your API key (it's free!)
 
-3. **Configure environment variables**:
-```bash
-cp .env.example .env
-```
+4. **Configure environment variables**:
 
-Edit `.env` and add your Gemini API key:
+Create a `.env` file in the backend directory:
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 PORT=5000
 NODE_ENV=development
 ```
 
-4. **Start the server**:
+5. **Start the server**:
 
 Development mode (with auto-reload):
 ```bash
@@ -54,12 +59,96 @@ Production mode:
 npm start
 ```
 
-## API Endpoints
+The server will start on `http://localhost:5000`
 
-### Generate Content
+## 🚀 Deployment to Render
+
+### Prerequisites
+- GitHub repository with your code
+- Render account (free tier available at [render.com](https://render.com))
+- Gemini API key
+
+### Deployment Steps
+
+1. **Push to GitHub**:
+```bash
+git add .
+git commit -m "Ready for deployment"
+git push origin main
+```
+
+2. **Create New Web Service on Render**:
+   - Go to [Render Dashboard](https://dashboard.render.com/)
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Select the repository with your backend code
+
+3. **Configure the Service**:
+   - **Name**: `contentgenerator-backend` (or your preferred name)
+   - **Environment**: `Node`
+   - **Region**: Choose closest to your users
+   - **Branch**: `main` (or your deployment branch)
+   - **Root Directory**: `backend` (if backend is in a subdirectory)
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+
+4. **Set Environment Variables**:
+   
+   In the "Environment" section, add:
+   ```
+   GEMINI_API_KEY = your_actual_gemini_api_key
+   NODE_ENV = production
+   PORT = 5000
+   ```
+
+5. **Advanced Settings** (Optional):
+   - **Health Check Path**: `/api/health`
+   - **Auto-Deploy**: Enable for automatic deployments on git push
+
+6. **Deploy**:
+   - Click "Create Web Service"
+   - Wait for deployment to complete (usually 2-3 minutes)
+   - Your API will be live at: `https://your-service-name.onrender.com`
+
+### Post-Deployment
+
+**Test your deployment**:
+```bash
+# Health check
+curl https://your-service-name.onrender.com/api/health
+
+# Get content types
+curl https://your-service-name.onrender.com/api/content-types
+
+# Generate content
+curl -X POST https://your-service-name.onrender.com/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{"type":"joke","keyword":"programming","tone":"funny","length":"short"}'
+```
+
+**Update your frontend**: Update the API URL in your frontend code to point to your Render URL.
+
+### Using render.yaml (Alternative)
+
+The included `render.yaml` file allows for infrastructure-as-code deployment:
+
+1. Connect your repo to Render
+2. Render will automatically detect `render.yaml`
+3. Set the `GEMINI_API_KEY` in the Render dashboard
+4. Deploy with one click!
+
+## 📚 API Documentation
+
+### Base URL
+- **Local**: `http://localhost:5000`
+- **Production**: `https://your-service-name.onrender.com`
+
+### Endpoints
+
+#### 1. Generate Content
 **POST** `/api/generate`
 
-Generate AI content based on parameters.
+Generate AI content with customizable parameters.
 
 **Request Body**:
 ```json
@@ -71,7 +160,13 @@ Generate AI content based on parameters.
 }
 ```
 
-**Response**:
+**Parameters**:
+- `type` (required): Content type (see supported types below)
+- `keyword` (required): Topic or keyword for content generation
+- `tone` (optional): `funny`, `serious`, `romantic`, `motivational` (default: `funny`)
+- `length` (optional): `short`, `medium`, `long` (default: `medium`)
+
+**Response** (200 OK):
 ```json
 {
   "success": true,
@@ -81,124 +176,179 @@ Generate AI content based on parameters.
     "keyword": "cats",
     "tone": "funny",
     "length": "medium",
-    "model": "gemini-1.5-flash",
-    "timestamp": "2025-12-13T08:00:00.000Z"
+    "model": "gemini-2.5-flash",
+    "timestamp": "2025-12-21T06:30:00.000Z"
   }
 }
 ```
 
-### Get Content Types
+#### 2. Get Content Types
 **GET** `/api/content-types`
 
-Returns all available content types.
+Returns all available content types with descriptions.
 
-### Health Check
-**GET** `/api/health`
-
-Check server status and AI provider info.
-
-**Response**:
+**Response** (200 OK):
 ```json
 {
-  "status": "OK",
-  "timestamp": "2025-12-13T08:00:00.000Z",
-  "version": "1.0.0",
-  "ai_provider": "Google Gemini",
-  "model": "gemini-1.5-flash"
+  "types": [
+    {
+      "id": "joke",
+      "name": "Joke",
+      "description": "You are a witty comedian who creates clever, appropriate jokes."
+    },
+    ...
+  ]
 }
 ```
 
-## Supported Content Types
+#### 3. Health Check
+**GET** `/api/health`
 
-| # | Type | Description | Example |
-|---|------|-------------|---------|
-| 1 | **shayari** | Urdu/Hindi poetry | Romantic verses |
-| 2 | **joke** | Witty jokes | "Why did the..." |
-| 3 | **quote** | Inspirational quotes | Motivational sayings |
-| 4 | **story** | Short stories | Mini narratives |
-| 5 | **riddle** | Brain teasers | Puzzles with answers |
-| 6 | **pickup-line** | Clever pickup lines | Charming lines |
-| 7 | **roast** | Playful roasts | Comedy roasts |
-| 8 | **compliment** | Genuine compliments | Kind words |
-| 9 | **dad-joke** | Pun-based humor | Classic dad jokes |
-| 10 | **haiku** | 5-7-5 poems | Traditional haiku |
-| 11 | **rap-lyrics** | Rhyming rap verses | Hip-hop lyrics |
-| 12 | **tweet-thread** | Social media threads | Twitter threads |
-| 13 | **acrostic** | First-letter poems | Word-based poems |
-| 14 | **motivational-speech** | Inspiring speeches | Powerful talks |
+Check server status and configuration.
 
-## Tone Options
+**Response** (200 OK):
+```json
+{
+  "status": "OK",
+  "timestamp": "2025-12-21T06:30:00.000Z",
+  "version": "1.0.0",
+  "ai_provider": "Google Gemini",
+  "model": "gemini-2.5-flash"
+}
+```
 
-- `funny` - Humorous and light-hearted
-- `serious` - Professional and thoughtful
-- `romantic` - Love-themed and emotional
-- `motivational` - Inspiring and uplifting
+#### 4. Root Endpoint
+**GET** `/`
 
-## Length Options
+API information and available endpoints.
 
-- `short` - ~100 words
-- `medium` - ~200 words
-- `long` - ~400 words
+## 🎨 Supported Content Types
 
-## Error Handling
+| Type | Description |
+|------|-------------|
+| `shayari` | Beautiful Urdu/Hindi poetry with emotional depth |
+| `joke` | Witty, clever jokes |
+| `quote` | Inspirational and meaningful quotes |
+| `story` | Engaging short stories with narrative structure |
+| `riddle` | Brain teasers with answers |
+| `pickup-line` | Clever, respectful pickup lines |
+| `roast` | Playful, good-natured roasts |
+| `compliment` | Genuine, heartwarming compliments |
+| `dad-joke` | Classic pun-based dad jokes |
+| `haiku` | Traditional 5-7-5 syllable poems |
+| `rap-lyrics` | Rhyming rap verses with flow |
+| `tweet-thread` | Engaging social media thread |
+| `acrostic` | Poems where first letters spell words |
+| `motivational-speech` | Inspiring, powerful speeches |
 
-The API returns appropriate HTTP status codes:
-- `200` - Success
-- `400` - Bad request (invalid parameters)
-- `401` - Unauthorized (invalid API key)
-- `429` - Rate limit exceeded
-- `500` - Internal server error
+## 🔒 Security Features
 
-## Rate Limiting
+- ✅ **Helmet.js** - Sets secure HTTP headers
+- ✅ **CORS** - Configured for cross-origin requests
+- ✅ **Rate Limiting** - 30 requests per 15 minutes per IP
+- ✅ **Environment Variables** - Sensitive data protection
+- ✅ **Error Handling** - Custom error middleware
+- ✅ **Input Validation** - Request parameter validation
 
-- 100 requests per 15 minutes per IP address
-- Helps prevent abuse and manage API usage
+## 📊 Rate Limiting
 
-## Security
+**Server-Side Protection**: 30 requests per 15 minutes per IP address
 
-- **Helmet** - Secure HTTP headers
-- **CORS** - Cross-origin resource sharing enabled
-- **Rate Limiting** - Protection against abuse
-- **Environment Variables** - Sensitive data protection
-
-## Google Gemini Free Tier
-
-**Generous Free Limits:**
-- ✅ 60 requests per minute
+**Gemini API Free Tier Limits**:
+- ✅ 15 requests per minute
 - ✅ 1,500 requests per day
 - ✅ 1 million tokens per month
-- ✅ No credit card required
+- ✅ **No credit card required!**
 
-This is perfect for personal projects and development!
+Perfect for personal projects and small-scale production apps!
 
-## Tech Stack
+## 🏗️ Project Structure
 
-- Node.js
-- Express.js
-- Google Generative AI SDK (@google/generative-ai)
-- Gemini 1.5 Flash model (FREE)
-- dotenv
-- Helmet
-- CORS
-- Express Rate Limit
+```
+backend/
+├── config/
+│   ├── contentConfigs.js    # Content type configurations
+│   └── gemini.config.js      # Gemini AI initialization
+├── controllers/
+│   └── generate.controller.js # Request handlers
+├── middlewares/
+│   ├── errorHandler.js       # Centralized error handling
+│   └── rateLimiter.js        # Rate limiting config
+├── routes/
+│   └── routes.js             # API route definitions
+├── services/
+│   └── gemini.service.js     # Gemini API service
+├── utils/
+│   └── lengthConfig.js       # Word limit configurations
+├── .env                      # Environment variables (gitignored)
+├── .gitignore               # Git ignore rules
+├── package.json             # Dependencies and scripts
+├── render.yaml              # Render deployment config
+└── server.js                # Application entry point
+```
 
-## Troubleshooting
+## ⚙️ Tech Stack
+
+- **Runtime**: Node.js (v14+)
+- **Framework**: Express.js v4.18.2
+- **AI SDK**: @google/generative-ai v0.24.1
+- **Security**: Helmet v7.1.0, CORS v2.8.5
+- **Rate Limiting**: express-rate-limit v7.1.5
+- **Configuration**: dotenv v16.3.1
+- **Development**: nodemon v3.0.2
+
+## 🛠️ Troubleshooting
 
 ### "API key invalid" error
-- Make sure you copied the full API key from Google AI Studio
-- Check that `.env` file has `GEMINI_API_KEY=your_key_here`
-- Restart the server after changing `.env`
+- ✅ Verify you copied the complete API key from Google AI Studio
+- ✅ Check `.env` file has `GEMINI_API_KEY=your_key_here` (no quotes)
+- ✅ Restart the server after changing `.env`
+- ✅ On Render, verify environment variable is set correctly
 
 ### "Rate limit exceeded" error
-- Free tier has 60 requests/minute
-- Wait a moment and try again
-- For high traffic, consider implementing request queuing
+- ✅ Server rate limit: 30 requests per 15 minutes (adjustable in `middlewares/rateLimiter.js`)
+- ✅ Gemini API: 15 requests per minute on free tier
+- ✅ Wait a moment and try again
+- ✅ Consider implementing request queuing for high traffic
 
 ### Server won't start
-- Ensure port 5000 is not already in use
-- Run `npm install` to install dependencies
-- Check Node.js version (requires v14+)
+- ✅ Ensure port 5000 is not already in use
+- ✅ Run `npm install` to install all dependencies
+- ✅ Check Node.js version: `node --version` (requires v14+)
+- ✅ Verify `.env` file exists and contains `GEMINI_API_KEY`
 
-## License
+### Deployment issues on Render
+- ✅ Verify build command is `npm install`
+- ✅ Verify start command is `npm start`
+- ✅ Check environment variables are set in Render dashboard
+- ✅ Review deployment logs for specific errors
+- ✅ Ensure health check path `/api/health` is accessible
 
-MIT
+## 🔄 Development Workflow
+
+1. **Make changes** to your code
+2. **Test locally**: `npm run dev`
+3. **Commit changes**: `git add . && git commit -m "your message"`
+4. **Push to GitHub**: `git push origin main`
+5. **Auto-deploy**: If enabled on Render, deployment happens automatically
+6. **Manual deploy**: Trigger from Render dashboard if needed
+
+## 📝 Environment Variables Reference
+
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| `GEMINI_API_KEY` | Yes | Your Google Gemini API key | `AIza...` |
+| `PORT` | No | Server port (default: 5000) | `5000` |
+| `NODE_ENV` | No | Environment mode | `production` |
+
+## 📄 License
+
+MIT License - Feel free to use this project for your own purposes!
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to submit issues and enhancement requests.
+
+---
+
+**Built with ❤️ using Google Gemini 2.5 Flash**
